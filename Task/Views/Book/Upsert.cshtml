@@ -1,0 +1,84 @@
+﻿@model Book
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<form enctype="multipart/form-data"  method="post" asp-action="Upsert">
+    <div class="row">
+        <div class="col-9">
+            <div class=" border p-3 mt-4 row">
+                <div class="col-9 row pb-2">
+                    <h2 class="text-primary">@(Model.Id == 0 ? "Create" : "Edit") Book</h2>
+                    <hr/>
+                </div>
+                @*<div asp-validation-summary="All"></div>*@
+
+                <input asp-for="Id" hidden/>
+                <div class="mb-3 col-10">
+                    <label asp-for="Title">Title</label>
+                    <input asp-for="Title" class="form-control"/>
+                    <span asp-validation-for="Title" class="text-danger"> </span>
+                </div>
+
+                <div class="mb-3 col-10">
+                    <label asp-for="Author">Author</label>
+                    <input asp-for="Author" class="form-control"/>
+                    <span asp-validation-for="Author" class="text-danger"> </span>
+                </div>
+                <div class="mb-3 col-10">
+                    <label asp-for="Description">Description</label>
+                    <input asp-for="Description" class="form-control"/>
+                    <span asp-validation-for="Description" class="text-danger"> </span>
+                </div>
+                   <div class="mb-3 col-10">
+                       <label asp-for="ReleaseDate">Release Date</label>
+                       <input type="date" asp-for="ReleaseDate.Date" id="datepicker" class="form-control"/>
+                       <span asp-validation-for="ReleaseDate" class="text-danger"> </span>
+                   </div>
+
+
+            </div>
+
+
+            <div class="col-12 mt-3">
+                @if (Model.Id != 0)
+                {
+                    <button type="submit" onclick="return ValidateDate()" class="btn btn-primary" style="width: 150px">Update</button>
+                }
+                else
+                {
+                    <button type="submit" onclick="return ValidateDate()"  class="btn btn-primary" style="width: 150px">Create</button>
+                }
+
+
+                <a asp-controller="Book" asp-action="Index" style="width: 150px" class="btn btn-secondary">Back To List</a>
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+    
+ <script>
+ function  ValidateDate(){
+     const date = new Date(document.getElementById("datepicker").value) ;
+     const today = new Date();
+ if (date >= today){
+     Swal.fire({
+       icon: 'error',
+       title: 'Oops...',
+       text: 'Please upload an Image!',
+       footer: '<a href="">Why do I have this issue?</a>'
+     })
+     return false
+  }    
+return true
+ }
+ </script>
+    
+}
